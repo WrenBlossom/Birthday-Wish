@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ff7eb3, #ff758c);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 3em;
+            margin: 0 0 10px;
+        }
+        p {
+            font-size: 1.2em;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background: #ff758c;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s;
+        }
+        button:hover {
+            transform: scale(1.1);
+            background: #ff7eb3;
+        }
+        #message {
+            margin-top: 20px;
+            display: none;
+            animation: popUp 1s ease-in-out;
+        }
+        img {
+            max-width: 200px;
+            margin-top: 0px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popUp {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .balloon {
+            position: absolute;
+            bottom: -10%;
+            width: 50px;
+            height: 90px;
+            background: radial-gradient(circle, #5349da 60%, #e8434a);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+        }
+        .balloon::before {
+            content: "";
+            position: absolute;
+            width: 6px;
+            height: 20px;
+            background: #fff;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+        }
+        .balloon:nth-child(1) { left: 20%; animation-duration: 7s; }
+        .balloon:nth-child(2) { left: 50%; animation-duration: 5s; }
+        .balloon:nth-child(3) { left: 80%; animation-duration: 6s; }
+        .balloon:nth-child(4) { left: 30%; animation-duration: 3s; }
+        .balloon:nth-child(5) { left: 60%; animation-duration: 3s; }
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            50% { transform: translateY(-200px) scale(1.2); opacity: 0.8; }
+            100% { transform: translateY(-400px) scale(1); opacity: 0; }
+        }
+        .fireworks-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .firework {
+            position: absolute;
+            bottom: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: firework-up 2s cubic-bezier(0.47, 0, 0.74, 0.71), firework-explode 2s ease-in-out;
+        }
+        @keyframes firework-up {
+            0% { transform: translateY(0); opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-300px); opacity: 0; }
+        }
+        @keyframes firework-explode {
+            80% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="background">
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+        </div>
+        <div class="fireworks-container"></div>
+        <div class="card">
+            <h1>🎉 Happy Birthday! 🎂</h1>
+            <p>Wishing you all the joy and happiness in the world!</p>
+            <button id="playMusic">Play Song 🎵</button>
+            <button id="revealMessage">Open Surprise 🎁</button>
+            <div id="message">
+                <p>You are amazing and loved. Have a fantastic day! ❤️</p>
+                <img src="birthday-cake.jpg" alt="Birthday Cake">
+            </div>
+        </div>
+    </div>
+    <audio id="birthdaySong" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+    <script>
+        // Play Music
+        const playMusicButton = document.getElementById('playMusic');
+        const birthdaySong = document.getElementById('birthdaySong');
+
+        playMusicButton.addEventListener('click', () => {
+            birthdaySong.play();
+            playMusicButton.innerText = "🎵 Playing...";
+            playMusicButton.disabled = true;
+        });
+
+        // Reveal Message with Fireworks
+        const revealButton = document.getElementById('revealMessage');
+        const messageDiv = document.getElementById('message');
+        const fireworksContainer = document.querySelector('.fireworks-container');
+
+        revealButton.addEventListener('click', () => {
+            messageDiv.style.display = 'block';
+            revealButton.style.display = 'none';
+            triggerFireworks();
+        });
+
+        function triggerFireworks() {
+            for (let i = 0; i < 10; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = `${Math.random() * 100}%`;
+                firework.style.animationDuration = `${1 + Math.random() * 2}s`;
+                firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                fireworksContainer.appendChild(firework);
+                setTimeout(() => firework.remove(), 3000);
+            }
+        }
+    </script>
+</body>
+</html>
